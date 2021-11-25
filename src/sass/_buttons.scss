@@ -1,0 +1,27 @@
+button {
+  padding: 0;
+  height: 30px;
+}
+
+.form-btn {
+  width: 30px;
+  border-radius: 50% 50%;
+  background-color: teal;
+}
+
+.load-more-btn {
+  display: block;
+  margin: 20px auto;
+  padding-left: 10px;
+  padding-right: 10px;
+  border-radius: 7px 7px;
+  border-color: teal;
+
+  font-weight: 700;
+  background-color: rgb(82, 189, 189);
+  color: rgb(7, 78, 78);
+}
+
+.is-hidden {
+  display: none;
+}
