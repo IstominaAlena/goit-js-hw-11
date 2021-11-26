@@ -1,6 +1,6 @@
 import './sass/main.scss';
 
-import './js/page-scroll';
+import { smoothScroll } from './js/smooth-scroll';
 import { fetchQuery } from './js/fetch-query';
 import galleryTemplate from './templates/gallery-template.hbs';
 
@@ -49,16 +49,14 @@ async function onInputCheckFn(value) {
 }
 
 // Проверка содержимого в ответе
-function responseCheckFn({ data }) {
-  let objArray = data.hits;
-
-  if (!objArray.length) {
+function responseCheckFn({ data: { hits, totalHits } }) {
+  if (!hits.length) {
     return Notify.failure(
       'Sorry, there are no images matching your search query. Please try again.'
     );
   }
 
-  renderGalleryCardsFn(objArray);
+  renderGalleryCardsFn(hits);
 
   // Создание листаемой галереи с помощью библиотеки
   lightboxGallery = new SimpleLightbox('.gallery-link');
@@ -66,7 +64,7 @@ function responseCheckFn({ data }) {
   const pageLimit = Number(localStorage.getItem('per_page'));
 
   // Если на страницу приходит совсем мало элементов
-  if (objArray.length < pageLimit || data.total === pageLimit) {
+  if (hits.length < pageLimit || totalHits === pageLimit) {
     hideHTMLelem(loadMoreBtn);
     showHTMLelem(message);
     return;
@@ -100,7 +98,6 @@ async function loadMoreBtnFn() {
   //     onGalleryCheckFn(resp);
   //   })
   //   .catch(console.log);
-
   pageIterationFn();
 
   try {
@@ -111,6 +108,8 @@ async function loadMoreBtnFn() {
   } catch (error) {
     console.log(error);
   }
+
+  smoothScroll();
 }
 
 // Увеличение номера страницы
