@@ -1,7 +1,13 @@
 .form-container {
-  // outline: 1px solid red;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  width: 100%;
   padding: 20px 15px;
   text-align: center;
+
+  border: 1px solid rgb(7, 78, 78);
 
   background-color: rgb(82, 189, 189);
 }

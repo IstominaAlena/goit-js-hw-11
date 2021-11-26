@@ -1,5 +1,6 @@
 import './sass/main.scss';
 
+import './js/page-scroll';
 import { fetchQuery } from './js/fetch-query';
 import galleryTemplate from './templates/gallery-template.hbs';
 
@@ -29,7 +30,7 @@ function onSubmitFn(evt) {
 }
 
 // Проверка валидности введеной информации
-function onInputCheckFn(value) {
+async function onInputCheckFn(value) {
   if (!value) {
     return Notify.failure('Please, enter the query');
   }
@@ -37,7 +38,14 @@ function onInputCheckFn(value) {
   localStorage.setItem('query', value);
   localStorage.setItem('page', 1);
 
-  fetchQuery(value).then(responseCheckFn).catch(console.log);
+  // fetchQuery(value).then(responseCheckFn).catch(console.log);
+
+  try {
+    const result = await fetchQuery(value);
+    responseCheckFn(result);
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 // Проверка содержимого в ответе
@@ -72,18 +80,30 @@ function clearGalleryFn() {
 loadMoreBtn.addEventListener('click', loadMoreBtnFn);
 
 // Функция при клике на кнопку Load more
-function loadMoreBtnFn() {
+async function loadMoreBtnFn() {
   let value = localStorage.getItem('query');
+
+  // fetchQuery(value)
+  //   .then(resp => {
+  //     loadMoreElem(resp);
+  //     // Обновление листаемой галереи с помощью библиотекиб после подгрузки новых фоток
+  //     lightboxGallery.refresh();
+  //     onGalleryCheckFn(resp);
+  //   })
+  //   .catch(console.log);
+
   pageIterationFn();
-  fetchQuery(value)
-    .then(resp => {
-      loadMoreElem(resp);
-      // Обновление листаемой галереи с помощью библиотекиб после подгрузки новых фоток
-      lightboxGallery.refresh();
-      onGalleryCheckFn(resp);
-    })
-    .catch(console.log);
+
+  try {
+    const result = await fetchQuery(value);
+    loadMoreElem(result);
+    lightboxGallery.refresh();
+    onGalleryCheckFn(resp);
+  } catch (error) {
+    console.log(error);
+  }
 }
+
 // Увеличение номера страницы
 function pageIterationFn() {
   let page = Number(localStorage.getItem('page')) + 1;
