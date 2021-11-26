@@ -98,7 +98,6 @@ async function loadMoreBtnFn() {
   //     onGalleryCheckFn(resp);
   //   })
   //   .catch(console.log);
-  pageIterationFn();
 
   try {
     const result = await fetchQuery(value);
@@ -109,6 +108,7 @@ async function loadMoreBtnFn() {
     console.log(error);
   }
 
+  pageIterationFn();
   smoothScroll();
 }
 
