@@ -57,12 +57,21 @@ function responseCheckFn({ data }) {
       'Sorry, there are no images matching your search query. Please try again.'
     );
   }
+
   renderGalleryCardsFn(objArray);
 
   // Создание листаемой галереи с помощью библиотеки
   lightboxGallery = new SimpleLightbox('.gallery-link');
 
-  // showHideLoadMoreBtn();
+  const pageLimit = Number(localStorage.getItem('per_page'));
+
+  // Если на страницу приходит совсем мало элементов
+  if (objArray.length < pageLimit || data.total === pageLimit) {
+    hideHTMLelem(loadMoreBtn);
+    showHTMLelem(message);
+    return;
+  }
+
   showHTMLelem(loadMoreBtn);
 }
 
@@ -98,7 +107,7 @@ async function loadMoreBtnFn() {
     const result = await fetchQuery(value);
     loadMoreElem(result);
     lightboxGallery.refresh();
-    onGalleryCheckFn(resp);
+    onGalleryCheckFn(result);
   } catch (error) {
     console.log(error);
   }
