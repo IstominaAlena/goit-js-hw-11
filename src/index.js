@@ -51,6 +51,7 @@ async function onInputCheckFn(value) {
 // Проверка содержимого в ответе
 function responseCheckFn({ data: { hits, totalHits } }) {
   if (!hits.length) {
+    hideHTMLelem(loadMoreBtn);
     return Notify.failure(
       'Sorry, there are no images matching your search query. Please try again.'
     );
@@ -107,8 +108,8 @@ async function loadMoreBtnFn() {
   } catch (error) {
     console.log(error);
   }
-
   pageIterationFn();
+
   smoothScroll();
 }
 
