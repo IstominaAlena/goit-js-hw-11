@@ -52,9 +52,8 @@ async function onInputCheckFn(value) {
 function responseCheckFn({ data: { hits, totalHits } }) {
   if (!hits.length) {
     hideHTMLelem(loadMoreBtn);
-    return Notify.failure(
-      'Sorry, there are no images matching your search query. Please try again.'
-    );
+    Notify.failure('Sorry, there are no images matching your search query. Please try again.');
+    return;
   }
 
   renderGalleryCardsFn(hits);
@@ -126,9 +125,7 @@ function onGalleryCheckFn({ data }) {
   let pageAmount = Math.ceil(data.totalHits / perPage);
 
   if (page >= pageAmount) {
-    // showHideLoadMoreBtn();
     hideHTMLelem(loadMoreBtn);
-    // showSorryText();
     showHTMLelem(message);
   }
 }
